@@ -34,9 +34,10 @@ type Query {
 
 type Mutation {
   addToken(newTokenData: NewTokenInput!): Token!
-  removeToken(id: String!): Boolean!
+  updateToken(updateTokenData: NewTokenInput!, id: String!): Token!
+  removeToken(id: String!): Token!
   addTemplate(newTemplateData: NewTemplateInput!): Template!
-  removeTemplate(id: String!): Boolean!
+  removeTemplate(id: String!): Template!
 }
 
 input NewTokenInput {
@@ -53,5 +54,6 @@ input NewTemplateInput {
 
 type Subscription {
   tokenAdded: Token!
+  tokenUpdated: Token!
   templateAdded: Template!
 }

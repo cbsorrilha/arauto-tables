@@ -28,7 +28,7 @@ export class TemplatesService {
     return await this.templateModel.findByIdAndRemove(id);
   }
 
-  async update(id: string, template: Template): Promise<Template> {
+  async update(id: string, template: NewTemplateInput): Promise<Template> {
     return await this.templateModel.findByIdAndUpdate(id, template, { new: true });
   }
 }

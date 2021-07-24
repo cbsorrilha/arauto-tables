@@ -35,13 +35,28 @@ export class TokensResolver {
     return token;
   }
 
-  @Mutation(() => Boolean)
-  async removeToken(@Args('id') id: string): Promise<boolean> {
-    return this.tokenService.remove(id);
+  @Mutation(() => Token)
+  async updateToken(
+    @Args('id') id: string,
+    @Args('updateTokenData') updateTokenData: NewTokenInput,
+  ): Promise<Token> {
+    const token = await this.tokenService.update(id, updateTokenData);
+    pubSub.publish('tokenAdded', { tokenUpdated: token });
+    return token;
+  }
+
+  @Mutation(() => Token)
+  async removeToken(@Args('id') id: string): Promise<Token> {
+    return this.tokenService.delete(id);
   }
 
   @Subscription(() => Token)
   tokenAdded(): AsyncIterator<any> {
     return pubSub.asyncIterator('tokenAdded');
+  }
+
+  @Subscription(() => Token)
+  tokenUpdated(): AsyncIterator<any> {
+    return pubSub.asyncIterator('tokenUpdate');
   }
 }
