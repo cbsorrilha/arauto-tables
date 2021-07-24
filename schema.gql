@@ -1,0 +1,57 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Token {
+  id: ID!
+  title: String!
+  author: String!
+  content: String
+  creationDate: DateTime
+  modifiedDate: DateTime
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type Template {
+  id: ID!
+  title: String!
+  author: String!
+  content: String
+  creationDate: DateTime
+  modifiedDate: DateTime
+}
+
+type Query {
+  token(id: String!): Token!
+  tokens(skip: Int = 0, take: Int = 25): [Token!]!
+  template(id: String!): Template!
+  templates(skip: Int = 0, take: Int = 25): [Template!]!
+}
+
+type Mutation {
+  addToken(newTokenData: NewTokenInput!): Token!
+  removeToken(id: String!): Boolean!
+  addTemplate(newTemplateData: NewTemplateInput!): Template!
+  removeTemplate(id: String!): Boolean!
+}
+
+input NewTokenInput {
+  title: String!
+  content: String
+  author: String!
+}
+
+input NewTemplateInput {
+  title: String!
+  content: String
+  author: String!
+}
+
+type Subscription {
+  tokenAdded: Token!
+  templateAdded: Template!
+}
