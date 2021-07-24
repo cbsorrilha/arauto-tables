@@ -36,8 +36,8 @@ export class TemplatesResolver {
   }
 
   @Mutation(() => Boolean)
-  async removeTemplate(@Args('id') id: string): Promise<boolean> {
-    return this.templateService.remove(id);
+  async removeTemplate(@Args('id') id: string): Promise<Template> {
+    return this.templateService.delete(id);
   }
 
   @Subscription(() => Template)

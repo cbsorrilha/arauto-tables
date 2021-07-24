@@ -1,34 +1,34 @@
 import { Injectable } from '@nestjs/common';
+import {InjectModel} from '@nestjs/mongoose';
 import { NewTemplateInput } from './dto/new-template.input';
 import { TemplatesArgs } from './dto/templates.args';
 import { Template } from './models/template.model';
-
-type Mock = Template[]
+import { Model } from 'mongoose';
 
 @Injectable()
 export class TemplatesService {
-  private state: Mock = []
-  /**
-   * MOCK
-   * Put some real business logic here
-   * Left for demonstration purposes
-   */
+  constructor(@InjectModel('Template') private readonly templateModel: Model<Template>) {}
 
   async create(data: NewTemplateInput): Promise<Template> {
-    const newTemplate = { id: Math.random().toString(), ...data}
-    this.state = [...this.state, newTemplate]
-    return newTemplate
+    const newItem = new this.templateModel(data);
+    return await newItem.save();
   }
 
   async findOneById(id: string): Promise<Template> {
-    return this.state.find(template => template.id === id)
+    return await this.templateModel.findOne({ _id: id });
   }
 
   async findAll(templatesArgs: TemplatesArgs): Promise<Template[]> {
-    return this.state;
+    const template = await this.templateModel.find();
+    console.log('template', template)
+    return await this.templateModel.find();
   }
 
-  async remove(id: string): Promise<boolean> {
-    return true;
+  async delete(id: string): Promise<Template> {
+    return await this.templateModel.findByIdAndRemove(id);
+  }
+
+  async update(id: string, template: Template): Promise<Template> {
+    return await this.templateModel.findByIdAndUpdate(id, template, { new: true });
   }
 }
