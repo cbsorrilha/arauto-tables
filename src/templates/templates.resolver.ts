@@ -36,6 +36,16 @@ export class TemplatesResolver {
   }
 
   @Mutation(() => Template)
+  async updateTemplate(
+    @Args('id') id: string,
+    @Args('updateTemplateData') updateTemplateData: NewTemplateInput,
+  ): Promise<Template> {
+    const template = await this.templateService.update(id, updateTemplateData);
+    pubSub.publish('templateAdded', { templateUpdated: template });
+    return template;
+  }
+
+  @Mutation(() => Template)
   async removeTemplate(@Args('id') id: string): Promise<Template> {
     return this.templateService.delete(id);
   }
